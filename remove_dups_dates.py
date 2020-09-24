@@ -93,6 +93,8 @@ def remove_duplicates(seqs, gb, ref_id):
 
     """
     seq_dict = dict()
+    dup_seqs = list()
+    bad_dates = list()
 
     seq_dict[seqs[ref_id].seq] = seqs[ref_id]
 
@@ -101,10 +103,15 @@ def remove_duplicates(seqs, gb, ref_id):
         collection_date = gb_rec.features[0].qualifiers['collection_date'][0]
         formatted_date, ok = check_date(collection_date)
 
-        if ok and not seq_rec.seq in seq_dict:
-            seq_dict[seq_rec.seq] = seq_rec
+        if ok: 
+            if not seq_rec.seq in seq_dict:
+                seq_dict[seq_rec.seq] = seq_rec
+            elif id != ref_id:
+                dup_seqs.append(seq_rec.id)
+        else:
+            bad_dates.append(seq_rec.id)
 
-    return seq_dict
+    return seq_dict, dup_seqs, bad_dates
 
 def main():
     path_date = '2020_09_04'
@@ -120,7 +127,7 @@ def main():
    
     all_seqs = read_fasta_file(fasta_file)
 
-    seqs = remove_duplicates(all_seqs, gb, ref_id)
+    seqs, dup_seqs, bad_dates = remove_duplicates(all_seqs, gb, ref_id)
 
     with open(out_file, 'w') as f:
         for s, seq_rec in seqs.items():
