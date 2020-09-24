@@ -12,7 +12,7 @@ FASTA format file: sequences.fasta
 run /mnt/d/Documents/analytic_garden/covid-19/2020_07_31/fetch_genbank.py
 GenBank file: sequences.gb
 
-4) Remove duplicate sequences
+4) Remove duplicate sequences and sequeces with bad dates
 /mnt/d/Documents/analytic_garden/covid-19/2020_07_31/remove_dups_dates.py
 New FASTA file sequences_no_dups.fasta
 
