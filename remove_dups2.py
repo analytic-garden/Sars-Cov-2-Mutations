@@ -1,12 +1,11 @@
 """
-remove_dupss.py - remove duplicate sequences and 
+remove_dups.py - remove duplicate sequences and 
                   add date and location to FASTA header
 author: Bill Thompson
 license: GPL 3
 copyright: Apr. 30, 2020
 """
 
-import os
 from Bio import SeqIO
 
 """
@@ -61,14 +60,13 @@ def remove_duplicates(seqs, ref_id):
 
 
 def main():
-    path = '/mnt/g/Covid-19/2020_09_04/'
+    date = '2020_09_04'
+    base = '/mnt/g/Covid-19/' + date + '/' 
     
-    fasta_file = 'sequences.fasta'
-    out_file = 'sequences_no_dups.fasta'
+    fasta_file = base + 'sequences.fasta'
+    out_file = base + 'sequences_no_dups.fasta'
     ref_id = 'NC_045512.2'
-    
-    os.chdir(path)
-    
+        
     all_seqs = read_fasta_file(fasta_file)
 
     seqs = remove_duplicates(all_seqs, ref_id)
