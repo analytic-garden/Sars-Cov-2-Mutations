@@ -55,7 +55,7 @@ def main():
     date = '2020_09_04'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
-    fasta_file = base + 'sequences_no_dups.fasta'
+    fasta_file = base + 'sequences.fasta'
     genbank_file = base + 'sequences.gb'
     
     all_seqs = read_fasta_file(fasta_file)
