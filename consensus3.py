@@ -64,7 +64,7 @@ def MI_table(variant_cols, pos_map, pseudo = 0.05):
             mi_tab[k] = MI(variant_cols[var_cols[i]][1],
                            variant_cols[var_cols[j]][1],
                            pseudo = pseudo)
-    mi_tab= {k: v for k, v in sorted(mi_tab.items(), key=lambda item: item[1], reverse=True)}
+    mi_tab = {k: v for k, v in sorted(mi_tab.items(), key=lambda item: item[1], reverse=True)}
 
     return mi_tab
 
@@ -295,6 +295,10 @@ def count_mutations(align, pos_map, ref_seq,
         c = Counter(align[:, col])
         if len(c) > 1:
             common = c.most_common(2)
+            
+            if common[0][0] in ['N', '-']:
+                continue   # ignore colums that are mostly N's or gaps
+            
             if len(c) == 2:
                 if common[1][0] in ['N']:  # ignore N's
                     continue
@@ -417,7 +421,7 @@ def find_location_feature(ref_seq, position, alt, consens):
     for f in ref_seq.features:
         if position in f:
             feat = f
-
+            
     feat_type = feat.type
     
     start = feat.location.start.real
@@ -522,11 +526,11 @@ def get_col_range(align, min_quality = 0.99):
     return start, end
     
 def main():
-    date = '2020_09_04'
+    date = '2020_10_07'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     align_file =  base + 'sequences_no_dups_aln.fasta'
-    genbank_file = base + 'sequences.gb'
+    genbank_file = base + 'seqs.gb/ncbi_dataset/data/genomic.gbff'
     csv_file_base = base + 'sars_cov_2_variation_ncbi_no_dups_'
     mutation_csv_base = base + 'sars_cov_2_ncbi_ncbi_mut_no_dups_'
     mutual_info_csv = base + 'MI_ncbi_no_dups.csv'
@@ -551,6 +555,13 @@ def main():
     start = 330 # override
 
     ref_seq = genbank[ref_id]  # the reference sequence record
+
+    mutations = count_mutations(align, pos_map, ref_seq, 
+                                start = start, end = end,
+                                consensus_cutoff=consensus_cutoff)
+    df2 = pd.DataFrame(mutations)
+    df2 = df2.sort_values('consensus %')
+    df2.to_csv(mutation_csv_file, index=False)
 
     df = init_dataframe(genbank, align)
         
@@ -584,12 +595,12 @@ def main():
     df_mi = pd.DataFrame(mi_dict)
     df_mi.to_csv(mutual_info_csv, index=False)
 
-    mutations = count_mutations(align, pos_map, ref_seq, 
-                                start = start, end = end,
-                                consensus_cutoff=consensus_cutoff)
-    df2 = pd.DataFrame(mutations)
-    df2 = df2.sort_values('consensus %')
-    df2.to_csv(mutation_csv_file, index=False)
+    # mutations = count_mutations(align, pos_map, ref_seq, 
+    #                             start = start, end = end,
+    #                             consensus_cutoff=consensus_cutoff)
+    # df2 = pd.DataFrame(mutations)
+    # df2 = df2.sort_values('consensus %')
+    # df2.to_csv(mutation_csv_file, index=False)
 
 if __name__ == "__main__":
     main()
