@@ -2,6 +2,8 @@ Pipeline
 
 edit path to point to latest data
 
+** get data from https://www.ncbi.nlm.nih.gov/datasets/coronavirus/genomes/
+
 1) Download sequences from https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Severe%20acute%20respiratory%20syndrome%20coronavirus%202%20(SARS-CoV-2),%20taxid:2697049&Completeness_s=complete
 Complete nucleotide sequences plus reference sequence NC_045512.
 FASTA format file: sequences.fasta
@@ -13,7 +15,7 @@ run /mnt/d/Documents/analytic_garden/covid-19/2020_07_31/fetch_genbank.py
 GenBank file: sequences.gb
 
 4) Remove duplicate sequences and sequeces with bad dates
-/mnt/d/Documents/analytic_garden/covid-19/2020_07_31/remove_dups_dates.py
+remove_dups_dates.py
 New FASTA file sequences_no_dups.fasta
 
 5) Align sequences
