@@ -30,16 +30,43 @@ def read_id_file(filename):
 
     return ids
 
+def find_missing_recs(id_list, recs):
+    """
+    find_missing_recs - get a list of GenBank records not downloades
+
+    Parameters
+    ----------
+    id_list : list
+        a list of IDs intended for download from GenBank.
+    recs : string
+        a large string containing GenBank records.
+
+    Returns
+    -------
+    missing : list
+        a list of GenBank IDs not returned.
+
+    """
+    missing = []
+    for id in id_list:
+        if recs.find(id) == -1:
+            print('Missing GenBank record:', id)
+            missing.append(id)
+            
+    return missing
 
 def main():
-    id_file = 'sequences.acc'
+#    id_file = 'sequences.acc'
+    id_file = 's.acc'
     out_file = 'sequences.gb'
     
-    os.chdir('/mnt/g/Covid-19/2020_09_04')
+    os.chdir('/mnt/g/Covid-19/2020_10_07')
 
     id_list = read_id_file(id_file)
 
     Entrez.email = 'analytic_garden@gmail.com'
+    
+    missing_list = list()
     
     out_handle = open(out_file, 'w')
     start = 0
@@ -50,11 +77,19 @@ def main():
                                   id=id_list[start:end], 
                                   rettype="gb")
         recs = in_handle.read()
+        if recs.count('LOCUS') != len(id_list[start:end]):
+            missing = find_missing_recs(id_list[start:end], recs)
+            missing_list += missing
+        
         out_handle.write(recs)
-        print('records', start, 'to', end-1)
+        print('records', start, 'to', end-1, 'count:', recs.count('LOCUS'))
         start += (end - start)
     out_handle.close()
     in_handle.close()
+    
+    print('Missing IDs')
+    for id in missing_list:
+        print(id)
     
 if __name__ == '__main__':
     main()
