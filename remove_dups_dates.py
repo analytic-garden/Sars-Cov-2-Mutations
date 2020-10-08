@@ -117,12 +117,11 @@ def main():
     path_date = '2020_10_07'
     base = '/mnt/g/Covid-19/' + path_date + '/' 
 
-    fasta_file = base + 'sequences.fasta'
-    genbank_file = base + 'sequences.gb'
+    fasta_file = base + 'seqs.fasta/ncbi_dataset/data/genomic.fna'
+    genbank_file = base + 'seqs.gb/ncbi_dataset/data/genomic.gbff'
     out_file = base + 'sequences_no_dups.fasta'
     ref_id = 'NC_045512.2'
         
-    genbank_file = base + 'sequences.gb'
     gb = read_genbank_file(genbank_file)
    
     all_seqs = read_fasta_file(fasta_file)
