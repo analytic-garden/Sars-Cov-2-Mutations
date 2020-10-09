@@ -585,9 +585,11 @@ def main():
     # mutual information
     print('Mutual Infomation')
     mi_tab = MI_table(variant_cols, pos_map)
-    mi_dict = {'Nucleotide Pairs': [], 'MI': []}
+    mi_dict = {'Position_1': [], 'Position_2': [], 'MI': []}
     for k,mi in mi_tab.items():
-        mi_dict['Nucleotide Pairs'].append(k)
+        p1, p2 = k.split(',')
+        mi_dict['Position_1'].append(int(p1))
+        mi_dict['Position_2'].append(int(p2))
         mi_dict['MI'].append(mi)
         if mi >= mi_cutoff:
             print('MI(', k,  ') =', mi)
