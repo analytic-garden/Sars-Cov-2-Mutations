@@ -538,7 +538,7 @@ def main():
     ref_id = 'NC_045512.2'
 
     # change these for different alignments and mutation level cutoffs
-    min_col_quality = 0.99
+    min_col_quality = 0.90
     consensus_cutoff = 0.98
     mi_cutoff = 0.5
     csv_file = csv_file_base + str(consensus_cutoff * 100) + '.csv'
@@ -552,7 +552,6 @@ def main():
     genbank = read_genbank_file(genbank_file)
     
     start, end = get_col_range(align, min_col_quality)
-    start = 330 # override
 
     ref_seq = genbank[ref_id]  # the reference sequence record
 
