@@ -1,4 +1,4 @@
-plot_varying_pct2 <- function(df) {
+plot_varying_pct2 <- function(df, mi_table, min_MI = 0.5) {
   # plot_varying_pct - plot Per Cent area charts for correlated genome positions
   #
   # arguments:
@@ -12,27 +12,15 @@ plot_varying_pct2 <- function(df) {
   library(gridExtra)
   library(rlist)
   
-  plot_path = 'G:\\Covid-19\\2020_09_04\\Plots_pct\\'
+  plot_path = 'G:\\Covid-19\\2020_10_07\\Plots_pct\\'
   
-  positions <- c('25563',
-                 '1059',
-                 '241',
-                 '14408',
-                 '23403',
-                 '3037',
-                 '28881',
-                 '28882',
-                 '28883',
-                 '28144',
-                 '8782',
-                 '18060',
-                 '17858',
-                 '17747')
+  temp <- mi_table %>% filter(MI >= min_MI)
+  positions <- as.character(sort(unique(c(temp$Position_1, temp$Position_2))))
   
   plot_list <- list()
   
   # this code is a mess and should be simplified
-  # Tidyverse doesn't do a very good job of handling columns stored in a varaible
+  # Tidyverse doesn't do a very good job of handling columns stored in a variable
   for(pos in positions) {
     col <- paste('Pos.', pos, sep='')
     
