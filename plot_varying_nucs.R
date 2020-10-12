@@ -1,4 +1,4 @@
-plot_varying_nucs <- function(df) {
+plot_varying_nucs <- function(df, mi_table, min_MI = 0.5) {
   require(tidyverse)
   require(rlist)
   library(grid)
@@ -6,20 +6,8 @@ plot_varying_nucs <- function(df) {
   
   plot_path = 'G:\\Covid-19\\2020_10_07\\Plots\\'
   
-  positions <- c('25563',
-                 '1059',
-                 '241',
-                 '14408',
-                 '23403',
-                 '3037',
-                 '28881',
-                 '28882',
-                 '28883',
-                 '28144',
-                 '8782',
-                 '18060',
-                 '17858',
-                 '17747')
+  temp <- mi_table %>% filter(MI >= min_MI)
+  positions <- as.character(sort(unique(c(temp$Position_1, temp$Position_2))))
   
   plot_list <- list()
   
