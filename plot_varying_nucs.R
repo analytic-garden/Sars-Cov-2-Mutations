@@ -4,7 +4,7 @@ plot_varying_nucs <- function(df) {
   library(grid)
   library(gridExtra)
   
-  plot_path = 'G:\\Covid-19\\2020_09_04\\Plots\\'
+  plot_path = 'G:\\Covid-19\\2020_10_07\\Plots\\'
   
   positions <- c('25563',
                  '1059',
