@@ -1,24 +1,16 @@
 Pipeline
 
-edit path to point to latest data
+1) Download SARS-CoV-2 FASTA and GenBank sequences from
+https://www.ncbi.nlm.nih.gov/datasets/coronavirus/genomes/
+unzip in data directories seqs.fasta dn segs.gb
+data is in seqs.fasta/ncbi_dataset/data/genomic.fna and
+seqs.gb/ncbi_dataset/data/genomic.gbff
 
-** get data from https://www.ncbi.nlm.nih.gov/datasets/coronavirus/genomes/
-
-1) Download sequences from https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Severe%20acute%20respiratory%20syndrome%20coronavirus%202%20(SARS-CoV-2),%20taxid:2697049&Completeness_s=complete
-Complete nucleotide sequences plus reference sequence NC_045512.
-FASTA format file: sequences.fasta
-
-2) Download nucleotide accession list: sequences.acc
-
-3) Download GenBank files
-run /mnt/d/Documents/analytic_garden/covid-19/2020_07_31/fetch_genbank.py
-GenBank file: sequences.gb
-
-4) Remove duplicate sequences and sequeces with bad dates
+2) Remove duplicate sequences and sequeces with bad dates
 remove_dups_dates.py
 New FASTA file sequences_no_dups.fasta
 
-5) Align sequences
+3) Align sequences
 time java -jar /home/bill/HAlign/HAlign-2.1.jar -localMSA sequences_no_dups.fasta sequences_no_dups_aln.fasta 0
 produces sequences_no_dups_aln.fasta
 
@@ -31,24 +23,32 @@ sars_cov_2_ncbi_ncbi_mut_no_dups_98.0.csv -  positions with significant mutation
 
 R
 
-7) Read sars_cov_2_variation_ncbi_no_dups_98.0.csv into dataframe
+7) Plot MI graph
+mi_2020_10_07 <- read.csv('MI_ncbi_no_dups.csv')
+plot_MI(mi_2020_10_07)
+
+8) Read sars_cov_2_variation_ncbi_no_dups_98.0.csv into dataframe
 cv_2020_09_04 <- read_csv('sars_cov_2_variation_ncbi_no_dups_98.0.csv')
 # remove spaves from column names
-names(cv_2020_09_04) <- make.names(names(cv_2020_09_04), unique = TRUE)
+names(cv_2020_10_07) <- make.names(names(cv_2020_10_07), unique = TRUE)
+cv_2020_10_07$Collection.Date <- as.Date(cv_2020_10_07$Collection.Date)
 
-8) Plot varying positions - displayes 14 positions and saves to files
-plot_varying_nucs(cv_2020_09_04)
-plot_varying_pct2(cv_2020_09_04)
+9) Plot varying positions - displays all positions with significant MI
+and saves to files
+plot_varying_nucs(cv_2020_10_07)
+plot_varying_pct2(cv_2020_10_07, mi_2020_10_04)
 Produces plots in Plots/ and Plots_pct
 
-9) run plot_varying_pct3(cv_2020_09_04, positions = c(241, 3037, 14408, 23403))
+10) run plot_varying_pct3(cv_2020_10_07, positions = c(241, 3037, 14408, 23403))
 to get plots for groups of counties
-run plot_varying_nucs2(cv_2020_09_04,positions = c(241, 3037, 14408, 23403))
+run plot_varying_nucs2(cv_2020_10_07,positions = c(241, 3037, 14408, 23403))
 to get bar plots of counts
 
-10) Plot combos
-cv_table_241 <- covary_table2(cv_2020_09_04, positions = c(241, 3037, 14408, 23403))
+11) Plot combos
+cv_table_241 <- covary_table2(cv_2020_10_07, positions = c(241, 3037, 14408, 23403))
 ggplot(cv_table_241, aes(x = Collection.Date, y=Count, fill=Nucleotides)) +
 		     geom_bar(stat='identity', width=1)
-cv_table_241 <- covary_table2(cv_2020_09_04)
+cv_table_241 <- covary_table2(cv_2020_10_07)
+
+
 
