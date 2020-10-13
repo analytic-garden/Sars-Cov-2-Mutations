@@ -56,3 +56,4 @@ temp <- cv_table_241 %>%
 	   summarise_at(c("Count"), sum)
 
 
+
