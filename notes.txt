@@ -48,7 +48,10 @@ to get bar plots of counts
 cv_table_241 <- covary_table2(cv_2020_10_07, positions = c(241, 3037, 14408, 23403))
 ggplot(cv_table_241, aes(x = Collection.Date, y=Count, fill=Nucleotides)) +
 		     geom_bar(stat='identity', width=1)
-cv_table_241 <- covary_table2(cv_2020_10_07)
-
+		     
+get counts of each combination
+cv_table_241 %>% group_by(Nucleotides) %>%
+   select(Count, Nucleotides) %>%
+   summarise_at(c("Count"), sum)
 
 
