@@ -15,11 +15,11 @@ from Bio import Align
 from Bio import AlignIO
 
 def main():
-    date = '2020_08_28'
-    path = '/mnt/g/Covid-19/' + date + '/'
+    date = '2020_10_07'
+    base = '/mnt/g/Covid-19/' + date + '/' 
     
-    in_file = path + 'sequences_filtered_aln2_red.fasta'
-    out_file = path + 'trees/sequences_filtered_aln2_samp4.fasta'
+    in_file = base + 'sequences_filtered_aln2_red.fasta'
+    out_file = base + 'trees/sequences_filtered_aln2_samp1.fasta'
     
     num_samples = 1000
     ref_id = 'NC_045512.2'
