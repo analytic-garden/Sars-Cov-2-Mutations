@@ -55,5 +55,37 @@ temp <- cv_table_241 %>%
      	   select(Count, Nucleotides) %>%
 	   summarise_at(c("Count"), sum)
 
+Build Trees
+
+12) Filter sequences to remove sequences with ambiguous or indels at reference
+positions.
+filter_seqs.py
+Default reference positions are 241, 3037, 14408, 23403
+Produces sequences_filtered.fasta
+
+13)
+Align filtered sequences
+time java -jar /home/bill/HAlign/HAlign-2.1.jar -localMSA sequences_filtered.fasta  sequences_filtered_aln.fasta 0
+Produces sequences_filtered_aln.fasta
+
+14) Remove low quality regions from either end of alignment.
+trim_alignment.py
+Produces sequences_filtered_aln_red.fasta
+
+15) Reformat FASTA headers - add data and country
+reformat_aln_headers.py
+seq_positions must match positions in step 12
+Produces sequences_filtered_aln2_red.fasta
+
+16) Sample sequences to build trees
+sample_aligned_sequences.py
+Produces trees/sequences_filtered_aln2_samp1.fasta
+Repeat sampling for new tree
+
+
+
+
+
+
 
 
