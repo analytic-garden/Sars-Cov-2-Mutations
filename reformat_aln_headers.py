@@ -34,14 +34,14 @@ def get_quartet(df, id, seq_positions):
     return seq_str
 
 def main():
-    date = '2020_08_28'
-    path = '/mnt/g/Covid-19/' + date + '/'
-   
-    align_file = path + 'sequences_filtered_aln_red.fasta'
-    genbank_file = path + 'sequences.gb'
-    out_file = path + 'sequences_filtered_aln2_red.fasta'
-    csv_file = path + 'sars_cov_2_variation_ncbi_no_dups_98.0.csv'
-    
+    date = '2020_10_07'
+    base = '/mnt/g/Covid-19/' + date + '/'
+
+    align_file = base + 'sequences_filtered_aln_red.fasta'
+    genbank_file = base + 'seqs.gb/ncbi_dataset/data/genomic.gbff'
+    out_file = base + 'sequences_filtered_aln2_red.fasta'
+    csv_file = base + 'sars_cov_2_variation_ncbi_no_dups_98.0.csv'
+
     seq_positions = ['Pos 241', 'Pos 3037', 'Pos 14408', 'Pos 23403']
 
     df = pd.read_csv(csv_file, header=0, index_col=0)
