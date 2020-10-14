@@ -68,14 +68,15 @@ def remove_duplicates(seqs, id_list):
     return seq_dict
 
 def main():
-    path = '/mnt/g/Covid-19/2020_08_28/'
+    date = '2020_10_07'
+    base = '/mnt/g/Covid-19/' + date + '/' 
     
-    in_file = path + 'sequences_no_dups.fasta'
-    out_file = path + 'sequences_filtered.fasta'
-    seq_table = path + 'sars_cov_2_variation_ncbi_no_dups_98.0.csv'
+    in_file = base + 'sequences_no_dups.fasta'
+    out_file = base + 'sequences_filtered.fasta'
+    seq_table = base + 'sars_cov_2_variation_ncbi_no_dups_98.0.csv'
     ref_positions = [241, 3037, 14408, 23403]
     
-    os.chdir(path)
+    os.chdir(base)
         
     id_list = read_seq_table(seq_table, ref_positions)
     all_seqs = read_fasta_file(in_file)
