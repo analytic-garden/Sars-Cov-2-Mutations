@@ -82,10 +82,18 @@ sample_aligned_sequences.py
 Produces trees/sequences_filtered_aln2_samp1.fasta
 Repeat sampling for new tree
 
+17) Run BEAUTi as described at https://beast.community/first_tutorial.
+Use tip dates. Otherwise defaults are good.
+Produces sequences_filtered_aln2_samp1.xml
 
+Run BEAST
+Produces sequences_filtered_aln2_samp1.trees.txt,
+sequences_filtered_aln2_samp1.log.txt and
+sequences_filtered_aln2_samp1.ops.txt
 
+Run TreeAnnotator
+Produces sequences_filtered_aln2_samp1.trees_out.txt
 
-
-
-
-
+Run FigTree
+View tree sequences_filtered_aln2_samp1.trees_out.txt
+Export tree as Newick tree
