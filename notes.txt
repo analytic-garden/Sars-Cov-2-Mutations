@@ -97,3 +97,14 @@ Produces sequences_filtered_aln2_samp1.trees_out.txt
 Run FigTree
 View tree sequences_filtered_aln2_samp1.trees_out.txt
 Export tree as Newick tree
+
+18) Plot Tree in R
+
+Read Newick tree
+tree1 <- read.newick('trees/sequences_filtered_aln2_samp1.trees.nwk')
+
+Get tip lables
+df <- get_tip_types(tree1)
+
+Plot Tree
+plot_tree(tree1, df)
