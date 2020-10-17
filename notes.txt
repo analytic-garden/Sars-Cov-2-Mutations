@@ -17,7 +17,7 @@ produces sequences_no_dups_aln.fasta
 6) run consensus3.py
 edit consensus cutoff and min_qual_cutoff
 produces:
-sars_cov_2_variation_ncbi_no_dups_98.0.csv - positions with signifcant varion by NCBI ID
+sars_cov_2_variation_ncbi_no_dups_98.0.csv - positions with signifcant variation by NCBI ID
 MI_ncbi_no_dups.csv - mutual information among aligned positions
 sars_cov_2_ncbi_ncbi_mut_no_dups_98.0.csv -  positions with significant mutations
 
