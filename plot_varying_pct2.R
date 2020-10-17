@@ -29,7 +29,7 @@ plot_varying_pct2 <- function(df, mi_table, min_MI = 0.5) {
     for(let in c('A', 'C', 'G', 'T', 'N')) {
       temp_list[[let]] <- df %>% 
         select(Collection.Date, !!col_sym) %>%
-        filter(!!col_sym == let)  %>% # WTF tidyverse syntax/semantics gets worse all the time.
+        filter(!!col_sym == let)  %>% 
         group_by(Collection.Date) %>% 
         summarise(!!let := n())   # more strange syntax
     }
