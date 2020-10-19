@@ -14,12 +14,20 @@ New FASTA file sequences_no_dups.fasta
 time java -jar /home/bill/HAlign/HAlign-2.1.jar -localMSA sequences_no_dups.fasta sequences_no_dups_aln.fasta 0
 produces sequences_no_dups_aln.fasta
 
-6) run consensus3.py
+6)
 edit consensus cutoff and min_qual_cutoff
-produces:
-sars_cov_2_variation_ncbi_no_dups_98.0.csv - positions with signifcant variation by NCBI ID
-MI_ncbi_no_dups.csv - mutual information among aligned positions
-sars_cov_2_ncbi_ncbi_mut_no_dups_98.0.csv -  positions with significant mutations
+
+run variation.py 
+produces: sars_cov_2_variation_ncbi_no_dups_98.0.csv
+positions with signifcant variation by NCBI ID
+
+run mutations.py
+produces: sars_cov_2_ncbi_ncbi_mut_no_dups_98.0.csv
+positions with significant mutations
+
+run MI.py
+produces: MI_ncbi_no_dups.csv
+mutual information among aligned positions
 
 R
 
