@@ -9,6 +9,7 @@ import pandas as pd
 from Bio import AlignIO
 from Bio import SeqIO
 from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 from collections import Counter
 from collections import defaultdict
 from sklearn import metrics
@@ -291,7 +292,7 @@ def count_mutations(align, pos_map, ref_seq,
     alt_consensus = []
     
     # run through columns and find coulmns with significant variation
-    for col in range(start, end):
+    for col in range(start, end):          
         c = Counter(align[:, col])
         if len(c) > 1:
             common = c.most_common(2)
@@ -423,29 +424,30 @@ def find_location_feature(ref_seq, position, alt, consens):
             feat = f
             
     feat_type = feat.type
-    
+       
     start = feat.location.start.real
     end = feat.location.end.real
-    sequence = ref_seq[feat.location.start.real:feat.location.end.real]
+    sequence = ref_seq[feat.location.start.real:(feat.location.end.real+1)]
                        
     offset = position - start
     codon_pos = offset % 3
     codon_start = offset - codon_pos
     codon_end = codon_start + 2
-    codon = sequence.seq[codon_start:(codon_end+1)]
+    codon = feat.extract(ref_seq).seq[codon_start:(codon_end+1)]
     aa = codon.translate()
-
+    
     ref_nuc = sequence[offset]
     new_nuc = alt
     if alt == ref_nuc:
         new_nuc = consens
     aa_pos = codon_start / 3
-
-    codon_list = list(codon)
-    codon_list[codon_pos] = new_nuc
-    alt_codon = Seq(''.join(codon_list))
-    alt_aa = alt_codon.translate() if alt in ['A', 'C', 'G', 'T'] else ''
-
+    
+    seq_list = list(str(sequence.seq))
+    seq_list[offset] = new_nuc
+    new_seq = SeqRecord(Seq(''.join(seq_list)))
+    alt_codon = new_seq.seq[codon_start:(codon_end+1)]
+    alt_aa = alt_codon.translate() if new_nuc in ['A', 'C', 'G', 'T'] else ''
+    
     return {'conserved_position': position,
             'start': start,
             'end': end,
