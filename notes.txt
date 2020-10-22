@@ -2,11 +2,10 @@ Pipeline
 
 1) Download SARS-CoV-2 FASTA and GenBank sequences from
 https://www.ncbi.nlm.nih.gov/datasets/coronavirus/genomes/
-unzip in data directories seqs.fasta dn segs.gb
-data is in seqs.fasta/ncbi_dataset/data/genomic.fna and
-seqs.gb/ncbi_dataset/data/genomic.gbff
+unzip into ncbi_dataset
+data is in ncbi_dataset/data/genomic.fna and ncbi_dataset/data/genomic.gbff
 
-2) Remove duplicate sequences and sequeces with bad dates
+2) Remove duplicate sequences and sequences with bad dates
 remove_dups_dates.py
 New FASTA file sequences_no_dups.fasta
 
