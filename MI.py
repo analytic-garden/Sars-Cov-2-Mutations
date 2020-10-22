@@ -15,7 +15,7 @@ from consensus3 import MI_table, ref_pos_to_alignment, \
                         get_varying_columns, get_col_range
 
 def main():
-    date = '2020_10_07'
+    date = '2020_10_22'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     align_file =  base + 'sequences_no_dups_aln.fasta'
