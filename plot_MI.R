@@ -1,7 +1,7 @@
 plot_MI <- function(df, min_MI = 0.5) {
   # plot_MI - plot a graph of positions having significant mutual information
   # arguments:
-  #   df - a data frame from MI cvs produced by consensus3.py
+  #   df - a data frame from MI cvs produced by MI.py
   #   min_MI - all pairs with this value or above will be used
   
   require(tidyverse)
