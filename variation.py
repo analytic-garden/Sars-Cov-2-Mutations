@@ -15,12 +15,12 @@ from consensus3 import read_genbank_file, init_dataframe, get_varying_columns, \
                         ref_pos_to_alignment
                         
 def main():
-    date = '2020_10_07'
+    date = '2020_10_22'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     align_file =  base + 'sequences_no_dups_aln.fasta'
     csv_file_base = base + 'sars_cov_2_variation_ncbi_no_dups_'
-    genbank_file = base + 'seqs.gb/ncbi_dataset/data/genomic.gbff'
+    genbank_file = base + 'ncbi_dataset/data/genomic.gbff'
 
     ref_id = 'NC_045512.2'
     min_col_quality = 0.90
