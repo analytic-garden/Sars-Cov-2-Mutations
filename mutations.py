@@ -16,11 +16,11 @@ from consensus3 import ref_pos_to_alignment, read_genbank_file, \
                         get_col_range, count_mutations
                         
 def main():
-    date = '2020_10_07'
+    date = '2020_10_22'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     align_file =  base + 'sequences_no_dups_aln.fasta'
-    genbank_file = base + 'seqs.gb/ncbi_dataset/data/genomic.gbff'
+    genbank_file = base + 'ncbi_dataset/data/genomic.gbff'
     mutation_csv_base = base + 'sars_cov_2_ncbi_ncbi_mut_no_dups_'
 
     ref_id = 'NC_045512.2'
