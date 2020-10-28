@@ -119,6 +119,7 @@ def main():
 
     fasta_file = base + 'ncbi_dataset/data/genomic.fna'
     genbank_file = base + 'ncbi_dataset/data/genomic.gbff'
+    refseq_file = base + 'NC_045512.fasta'
     out_file = base + 'sequences_no_dups.fasta'
     ref_id = 'NC_045512.2'
         
@@ -127,11 +128,16 @@ def main():
     all_seqs = read_fasta_file(fasta_file)
 
     seqs, dup_seqs, bad_dates = remove_duplicates(all_seqs, gb, ref_id)
-
-    with open(out_file, 'w') as f:
-        for s, seq_rec in seqs.items():
-            SeqIO.write(seq_rec, f, 'fasta')
-
+    
+    f1 = open(out_file, 'w')
+    f2 = open(refseq_file, 'w')
+    for s, seq_rec in seqs.items():
+        if seq_rec.id == ref_id:
+            SeqIO.write(seq_rec, f2, 'fasta')
+        else:
+            SeqIO.write(seq_rec, f1, 'fasta')
+    f1.close()
+    f2.close()
 
 if __name__ == "__main__":
     main()
