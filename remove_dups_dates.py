@@ -114,7 +114,7 @@ def remove_duplicates(seqs, gb, ref_id):
     return seq_dict, dup_seqs, bad_dates
 
 def main():
-    path_date = '2020_10_22'
+    path_date = '2020_10_27'
     base = '/mnt/g/Covid-19/' + path_date + '/' 
 
     fasta_file = base + 'ncbi_dataset/data/genomic.fna'
