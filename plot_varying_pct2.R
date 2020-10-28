@@ -12,7 +12,7 @@ plot_varying_pct2 <- function(df, mi_table, min_MI = 0.5) {
   library(gridExtra)
   library(rlist)
   
-  plot_path = 'G:\\Covid-19\\2020_10_07\\Plots_pct\\'
+  plot_path = 'G:\\Covid-19\\2020_10_27\\Plots_pct\\'
   
   temp <- mi_table %>% filter(MI >= min_MI)
   positions <- as.character(sort(unique(c(temp$Position_1, temp$Position_2))))
@@ -56,8 +56,12 @@ plot_varying_pct2 <- function(df, mi_table, min_MI = 0.5) {
     tempj2 <- full_join(tempj1, temp3, by = "Collection.Date") 
     tempj2[is.na(tempj2)] <- 0
     
-    t <- tempj2 %>% pivot_longer(cols = c(A, C, G, T, N, Indel), names_to = 'Nuc', values_to = "Count")
-    t2 <- t %>% group_by(Collection.Date, Nuc) %>% summarise(n = sum(Count)) %>% mutate(Pct = (n/sum(n)) * 100)
+    t <- tempj2 %>% 
+      pivot_longer(cols = c(A, C, G, T, N, Indel), names_to = 'Nuc', values_to = "Count")
+    
+    t2 <- t %>% group_by(Collection.Date, Nuc) %>% 
+      summarise(n = sum(Count)) %>% 
+      mutate(Pct = (n/sum(n)) * 100)
     
     title <- paste('Nucleotide Per Cent', col)
     p <- ggplot(t2, aes(x = Collection.Date, y= Pct, fill = Nuc)) + 
