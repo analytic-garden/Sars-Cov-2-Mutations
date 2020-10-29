@@ -19,7 +19,8 @@ def main():
     date = '2020_10_27'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
-    align_file =  base + 'sequences_no_dups_aln.fasta'
+    ## align_file =  base + 'sequences_no_dups_aln.fasta'
+    align_file =  base + 'sequences_valid_dates_aln.fasta'
     genbank_file = base + 'ncbi_dataset/data/genomic.gbff'
     mutation_csv_base = base + 'sars_cov_2_ncbi_ncbi_mut_no_dups_'
 
