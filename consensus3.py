@@ -300,8 +300,8 @@ def count_mutations(align, pos_map, ref_seq,
             if common[0][0] in ['N', '-']:
                 continue   # ignore colums that are mostly N's or gaps
             
-            if len(c) == 2:
-                if common[1][0] in ['N']:  # ignore N's
+            if len(c) >= 2:
+                if common[1][0] in ['N', '-']:  # ignore N's
                     continue
 
             # count nucleotides
@@ -335,12 +335,13 @@ def count_mutations(align, pos_map, ref_seq,
     refs = []
     aa_pos = []
     feat_type = []
+    mutations = []
     # find the codons and amino acids
     for position, pct, alt, consens in zip(ref_cols,
                                            consensus_pct,
                                            alt_consensus,
                                            consensus):
-        if pct/100 < consensus_cutoff:  # only use significan columns
+        if pct/100 < consensus_cutoff: # only use significan columns
             seq_info = find_location_feature(ref_seq, position-1, alt, consens)
             aas.append(str(seq_info['aa']))
             feat_type.append(seq_info['feature_type'])
@@ -349,10 +350,14 @@ def count_mutations(align, pos_map, ref_seq,
                 codons.append(str(seq_info['codon']))
                 alt_codons.append(str(seq_info['alt_codon']))
                 alt_aas.append(str(seq_info['alt_aa']))
+                mutations.append(str(seq_info['aa']) + \
+                                 str(int(seq_info['aa_pos'])+1) + \
+                                 str(seq_info['alt_aa']))                                     
             else:
                 codons.append('')
                 alt_codons.append('')
                 alt_aas.append('')
+                mutations.append('')
                 
             notes.append(format_qual(seq_info['qualifiers'], 'note'))
             products.append(format_qual(seq_info['qualifiers'], 'product'))
@@ -368,9 +373,10 @@ def count_mutations(align, pos_map, ref_seq,
             refs.append('')
             aa_pos.append('')
             feat_type.append('')
+            mutations.append('')
 
     return {'alignment columns': align_cols,
-            'reference columns': ref_cols,
+            'reference positions': ref_cols,
             'A': nts['A'],
             'C': nts['C'],
             'G': nts['G'],
@@ -387,6 +393,7 @@ def count_mutations(align, pos_map, ref_seq,
             'alt_codons': alt_codons,
             'alt_aas': alt_aas,
             'aa_pos': aa_pos,
+            'mutations': mutations,
             'products': products,
             'notes': notes
             }
@@ -425,9 +432,17 @@ def find_location_feature(ref_seq, position, alt, consens):
             
     feat_type = feat.type
        
-    start = feat.location.start.real
-    end = feat.location.end.real
-    sequence = ref_seq[feat.location.start.real:(feat.location.end.real+1)]
+    for p in feat.location.parts:
+        start = feat.location.start.real
+        end = feat.location.end.real
+        if position >= start and position < end:
+            break;
+             
+    sequence = ref_seq[start:end]
+        
+    # start = feat.location.start.real
+    # end = feat.location.end.real
+    # sequence = ref_seq[feat.location.start.real:(feat.location.end.real+1)]
                        
     offset = position - start
     codon_pos = offset % 3
