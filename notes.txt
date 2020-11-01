@@ -43,12 +43,11 @@ plot_MI(mi_2020_10_27)
 
 8) Read sars_cov_2_variation_ncbi_no_dups_98.0.csv into dataframe
 cv_2020_10_27 <- read.csv('sars_cov_2_variation_ncbi_no_dups_98.0.csv')
-# remove spaces from column names
+# set Collection.Date to datetime
 cv_2020_10_27$Collection.Date <- as.Date(cv_2020_10_27$Collection.Date)
 
 9) Plot varying positions - displays all positions with significant MI
 and saves to files
-plot_varying_nucs(cv_2020_10_27)
 plot_varying_pct2(cv_2020_10_27, mi_2020_10_27)
 Produces plots in Plots/ and Plots_pct
 
