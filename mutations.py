@@ -46,7 +46,7 @@ def main():
                                 start = start, end = end,
                                 consensus_cutoff=consensus_cutoff)
     df2 = pd.DataFrame(mutations)
-    df2 = df2.sort_values('reference positions')
+    df2 = df2.sort_values('consensus %')
     df2.to_csv(mutation_csv_file, index=False)
 
 if __name__ == "__main__":

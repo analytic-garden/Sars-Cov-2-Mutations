@@ -336,6 +336,7 @@ def count_mutations(align, pos_map, ref_seq,
     aa_pos = []
     feat_type = []
     mutations = []
+    new_nucs = []
     # find the codons and amino acids
     for position, pct, alt, consens in zip(ref_cols,
                                            consensus_pct,
@@ -352,12 +353,14 @@ def count_mutations(align, pos_map, ref_seq,
                 alt_aas.append(str(seq_info['alt_aa']))
                 mutations.append(str(seq_info['aa']) + \
                                  str(int(seq_info['aa_pos'])+1) + \
-                                 str(seq_info['alt_aa']))                                     
+                                 str(seq_info['alt_aa']))
+                new_nucs.append(str(seq_info['new_nuc']))
             else:
                 codons.append('')
                 alt_codons.append('')
                 alt_aas.append('')
                 mutations.append('')
+                new_nucs.append('')
                 
             notes.append(format_qual(seq_info['qualifiers'], 'note'))
             products.append(format_qual(seq_info['qualifiers'], 'product'))
@@ -374,6 +377,7 @@ def count_mutations(align, pos_map, ref_seq,
             aa_pos.append('')
             feat_type.append('')
             mutations.append('')
+            new_nucs.append('')
 
     return {'alignment columns': align_cols,
             'reference positions': ref_cols,
@@ -386,7 +390,7 @@ def count_mutations(align, pos_map, ref_seq,
             'ref': refs,
             'consensus': consensus,
             'consensus %': consensus_pct,
-            'alt': alt_consensus,
+            'alt': new_nucs,
             'feature_type': feat_type,
             'codons': codons,
             'ref_aa': aas,
@@ -433,22 +437,23 @@ def find_location_feature(ref_seq, position, alt, consens):
     feat_type = feat.type
        
     for p in feat.location.parts:
-        start = feat.location.start.real
-        end = feat.location.end.real
+        start = p.start.real
+        end = p.end.real
         if position >= start and position < end:
             break;
              
-    sequence = ref_seq[start:end]
+    sequence = ref_seq.seq[start:end]
         
     # start = feat.location.start.real
     # end = feat.location.end.real
-    # sequence = ref_seq[feat.location.start.real:(feat.location.end.real+1)]
+    # sequence = ref_seq[start:(end+1)]
                        
     offset = position - start
     codon_pos = offset % 3
     codon_start = offset - codon_pos
     codon_end = codon_start + 2
-    codon = feat.extract(ref_seq).seq[codon_start:(codon_end+1)]
+    # codon = feat.extract(ref_seq).seq[codon_start:(codon_end+1)]
+    codon = sequence[codon_start:(codon_end+1)]
     aa = codon.translate()
     
     ref_nuc = sequence[offset]
@@ -457,7 +462,7 @@ def find_location_feature(ref_seq, position, alt, consens):
         new_nuc = consens
     aa_pos = codon_start / 3
     
-    seq_list = list(str(sequence.seq))
+    seq_list = list(str(sequence))
     seq_list[offset] = new_nuc
     new_seq = SeqRecord(Seq(''.join(seq_list)))
     alt_codon = new_seq.seq[codon_start:(codon_end+1)]
@@ -476,7 +481,8 @@ def find_location_feature(ref_seq, position, alt, consens):
             'ref_nuc': ref_nuc,
             'aa_pos': aa_pos,
             'seq': sequence,
-            'qualifiers': feat.qualifiers}
+            'qualifiers': feat.qualifiers,
+            'new_nuc': new_nuc}
 
 """
 count_variation_from_ref - count the differences from the reference sequence
