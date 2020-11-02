@@ -15,7 +15,7 @@ plot_varying_pct3 <- function(df, positions = c(241, 3037, 14408, 23403)) {
   plot_list <- list()
   
   # this code is a mess and should be simplified
-  # Tidyverse doesn't do a very good job of handling columns stored in a varaible
+  # Tidyverse doesn't do a very good job of handling columns stored in a variable
   for(pos in positions) {
     col <- paste('Pos.', pos, sep='')
     
@@ -58,7 +58,8 @@ plot_varying_pct3 <- function(df, positions = c(241, 3037, 14408, 23403)) {
     p <- ggplot(t2, aes(x = Collection.Date, y= Pct, fill = Nuc)) + 
       geom_area(alpha=0.6 , size=1, colour="black") + 
       labs(x='Collection Date', title = title) +
-      ylim(c(0, 100))
+      ylim(c(0, 100)) +
+      scale_y_discrete(expand=c(0,0))  # this removes vertical white lines
 
     plot_list <- list.append(plot_list, p)
   }
