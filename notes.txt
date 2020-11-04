@@ -49,7 +49,7 @@ plot_varying_pct2(cv_2020_11_03, mi_2020_11_03)
 Produces plots in Plots/ and Plots_pct
 
 10) run plot_varying_pct3(cv_2020_11_03, positions = c(241, 3037, 14408, 23403))
-to get plots for groups of counties
+to get plots for groups of sites
 run plot_varying_nucs2(cv_2020_11_03,positions = c(241, 3037, 14408, 23403))
 to get bar plots of counts
 
