@@ -5,20 +5,20 @@ https://www.ncbi.nlm.nih.gov/datasets/coronavirus/genomes/
 unzip into ncbi_dataset
 data is in ncbi_dataset/data/genomic.fna and ncbi_dataset/data/genomic.gbff
 
-2) Remove duplicate sequences and sequences with bad dates
+2) Remove sequences with bad dates
 remove_dups_dates.py
-New FASTA file sequences_no_dups.fasta and NC_045512.fasta
+New FASTA file sequences_valid_dates.fasta and NC_045512.fasta
 
 3) Align sequences
 ## time java -jar /home/bill/HAlign/HAlign-2.1.jar -localMSA sequences_no_dups.fasta sequences_no_dups_aln.fasta 0
 ## produces sequences_no_dups_aln.fasta
 
 Align sequences to reference sequence NC_045512.2
-time ~/anaconda3/bin/mafft --auto --preservecase --addfragments sequences_no_dups.fasta NC_045512.fasta > sequences_no_dups_aln.fasta
+time ~/anaconda3/bin/mafft --auto --preservecase --addfragments sequences_valid_dates.fasta NC_045512.fasta > sequences_valid_dates_aln.fasta
 or
-time ~/anaconda3/bin/mafft --auto --preservecase --thread -1 --addfragments sequences_no_dups.fasta NC_045512.fasta > sequences_no_dups_aln.fasta
+time ~/anaconda3/bin/mafft --auto --preservecase --thread -1 --addfragments sequences_valid_dates.fasta NC_045512.fasta > sequences_valid_dates_aln.fasta
 
-Produces sequences_no_dups_aln.fasta
+Produces sequences_valid_dates_aln.fasta
 
 6)
 edit consensus cutoff and min_qual_cutoff
@@ -38,26 +38,26 @@ mutual information among aligned positions
 R
 
 7) Plot MI graph
-mi_2020_10_27 <- read.csv('MI_ncbi_no_dups.csv')
-plot_MI(mi_2020_10_27)
+mi_2020_11_03 <- read.csv('MI_ncbi_no_dups.csv')
+plot_MI(mi_2020_11_03)
 
 8) Read sars_cov_2_variation_ncbi_no_dups_98.0.csv into dataframe
-cv_2020_10_27 <- read.csv('sars_cov_2_variation_ncbi_no_dups_98.0.csv')
+cv_2020_11_03 <- read.csv('sars_cov_2_variation_ncbi_no_dups_98.0.csv')
 # set Collection.Date to datetime
-cv_2020_10_27$Collection.Date <- as.Date(cv_2020_10_27$Collection.Date)
+cv_2020_11_03$Collection.Date <- as.Date(cv_2020_11_03$Collection.Date)
 
 9) Plot varying positions - displays all positions with significant MI
 and saves to files
-plot_varying_pct2(cv_2020_10_27, mi_2020_10_27)
+plot_varying_pct2(cv_2020_11_03, mi_2020_11_03)
 Produces plots in Plots/ and Plots_pct
 
-10) run plot_varying_pct3(cv_2020_10_27, positions = c(241, 3037, 14408, 23403))
+10) run plot_varying_pct3(cv_2020_11_03, positions = c(241, 3037, 14408, 23403))
 to get plots for groups of counties
-run plot_varying_nucs2(cv_2020_10_27,positions = c(241, 3037, 14408, 23403))
+run plot_varying_nucs2(cv_2020_11_03,positions = c(241, 3037, 14408, 23403))
 to get bar plots of counts
 
 11) Plot combos
-cv_table_241 <- covary_table2(cv_2020_10_27, positions = c(241, 3037, 14408, 23403))
+cv_table_241 <- covary_table2(cv_2020_11_03, positions = c(241, 3037, 14408, 23403))
 ggplot(cv_table_241, aes(x = Collection.Date, y=Count, fill=Nucleotides)) +
 		     geom_bar(stat='identity', width=1)
 		     
