@@ -1,4 +1,4 @@
-plot_MI <- function(df, min_MI = 0.5) {
+plot_MI <- function(df, min_MI = 0.5, layout = 'kk') {
   # plot_MI - plot a graph of positions having significant mutual information
   # arguments:
   #   df - a data frame from MI cvs produced by MI.py
@@ -14,9 +14,9 @@ plot_MI <- function(df, min_MI = 0.5) {
     select(from, to, MI)
   
   mi_graph <- as_tbl_graph(temp, directed = FALSE)
-  
+
   p <- mi_graph %>% 
-        ggraph(layout = 'kk') + 
+        ggraph(layout = layout) + 
         geom_edge_link() +
         geom_node_point(size = 20, color = 'steelblue') +
         geom_node_text(aes(label = name), color = 'white') +
