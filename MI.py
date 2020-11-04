@@ -20,7 +20,7 @@ def main():
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'
     align_file =  base + 'sequences_valid_dates_aln.fasta'
-    mutual_info_csv = base + 'MI_ncbi_no_dups.csv'
+    mutual_info_csv = base + 'MI_ncbi_valid_dates.csv'
 
     min_col_quality = 0.90
     consensus_cutoff = 0.98

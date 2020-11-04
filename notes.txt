@@ -10,9 +10,6 @@ remove_dups_dates.py
 New FASTA file sequences_valid_dates.fasta and NC_045512.fasta
 
 3) Align sequences
-## time java -jar /home/bill/HAlign/HAlign-2.1.jar -localMSA sequences_no_dups.fasta sequences_no_dups_aln.fasta 0
-## produces sequences_no_dups_aln.fasta
-
 Align sequences to reference sequence NC_045512.2
 time ~/anaconda3/bin/mafft --auto --preservecase --addfragments sequences_valid_dates.fasta NC_045512.fasta > sequences_valid_dates_aln.fasta
 or
@@ -24,25 +21,25 @@ Produces sequences_valid_dates_aln.fasta
 edit consensus cutoff and min_qual_cutoff
 
 run variation.py 
-produces: sars_cov_2_variation_ncbi_no_dups_98.0.csv
+produces: sars_cov_2_variation_ncbi_valid_dates_98.0.csv
 positions with signifcant variation by NCBI ID
 
 run mutations.py
-produces: sars_cov_2_ncbi_ncbi_mut_no_dups_98.0.csv
+produces: sars_cov_2_ncbi_ncbi_mut_valid_dates_98.0.csv
 positions with significant mutations
 
 run MI.py
-produces: MI_ncbi_no_dups.csv
+produces: MI_ncbi_valid_dates.csv
 mutual information among aligned positions
 
 R
 
 7) Plot MI graph
-mi_2020_11_03 <- read.csv('MI_ncbi_no_dups.csv')
+mi_2020_11_03 <- read.csv('MI_ncbi_valid_dates.csv')
 plot_MI(mi_2020_11_03)
 
-8) Read sars_cov_2_variation_ncbi_no_dups_98.0.csv into dataframe
-cv_2020_11_03 <- read.csv('sars_cov_2_variation_ncbi_no_dups_98.0.csv')
+8) Read sars_cov_2_variation_ncbi_valid_dates_98.0.csv into dataframe
+cv_2020_11_03 <- read.csv('sars_cov_2_variation_ncbi_valid_dates_98.0.csv')
 # set Collection.Date to datetime
 cv_2020_11_03$Collection.Date <- as.Date(cv_2020_11_03$Collection.Date)
 

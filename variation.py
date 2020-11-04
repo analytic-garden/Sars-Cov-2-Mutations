@@ -20,7 +20,7 @@ def main():
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'
     align_file =  base + 'sequences_valid_dates_aln.fasta'
-    csv_file_base = base + 'sars_cov_2_variation_ncbi_no_dups_'
+    csv_file_base = base + 'sars_cov_2_variation_ncbi_valid_dates_'
     genbank_file = base + 'ncbi_dataset/data/genomic.gbff'
 
     ref_id = 'NC_045512.2'
