@@ -15,7 +15,7 @@ from consensus3 import read_genbank_file, init_dataframe, get_varying_columns, \
                         ref_pos_to_alignment
                         
 def main():
-    date = '2020_10_27'
+    date = '2020_11_03'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'

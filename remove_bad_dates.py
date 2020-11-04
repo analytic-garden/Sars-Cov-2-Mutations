@@ -70,7 +70,7 @@ def check_date(date):
     return (dt, date_ok)
 
 def main():
-    path_date = '2020_10_27'
+    path_date = '2020_11_03'
     base = '/mnt/g/Covid-19/' + path_date + '/' 
 
     fasta_file = base + 'ncbi_dataset/data/genomic.fna'
