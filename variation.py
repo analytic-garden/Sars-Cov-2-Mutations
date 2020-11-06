@@ -20,7 +20,7 @@ def main():
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'
     align_file =  base + 'sequences_valid_dates_aln.fasta'
-    csv_file_base = base + 'sars_cov_2_variation_ncbi_valid_dates_'
+    csv_file = base + 'sars_cov_2_variation_ncbi_valid_dates.csv'
     genbank_file = base + 'ncbi_dataset/data/genomic.gbff'
 
     ref_id = 'NC_045512.2'
@@ -31,8 +31,6 @@ def main():
     genbank = read_genbank_file(genbank_file)
 
     # change these for different alignments and mutation level cutoffs
-    consensus_cutoff = 0.98
-    csv_file = csv_file_base + str(consensus_cutoff * 100) + '.csv'
     
     # map alignment to the reference sequence
     pos_map = ref_pos_to_alignment(align_file, ref_id)
@@ -43,7 +41,6 @@ def main():
         
     # get varying columns
     variant_cols = get_varying_columns(align, 
-                                       consensus_cutoff = consensus_cutoff,
                                        start = start, end = end)
 
     diffs = count_variation_from_ref(align, align_file, ref_id, start, end)
@@ -53,7 +50,6 @@ def main():
     print('Variant Positions')
     for col in variant_cols:
         df['Pos ' + str(pos_map[col]+1)] = variant_cols[col][1]
-        print('Pos ' + str(pos_map[col]+1) + ':', variant_cols[col][0])
     print()
 
     df = df.sort_values('Collection Date')

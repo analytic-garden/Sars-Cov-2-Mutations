@@ -23,9 +23,10 @@ edit consensus cutoff and min_qual_cutoff
 run variation.py 
 produces: sars_cov_2_variation_ncbi_valid_dates_98.0.csv
 positions with signifcant variation by NCBI ID
+98.0 is the consensus cutoff
 
 run mutations.py
-produces: sars_cov_2_ncbi_ncbi_mut_valid_dates_98.0.csv
+produces: sars_cov_2_ncbi_ncbi_mut_valid_dates.csv
 positions with significant mutations
 
 run MI.py

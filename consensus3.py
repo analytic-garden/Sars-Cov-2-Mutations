@@ -152,14 +152,17 @@ requires:
 consensus_cutoff, start, end >= 0
 start, end with alignment column bounds
 """
-def get_varying_columns(align, consensus_cutoff = 0.8,
+def get_varying_columns(align,
                         start = 130, end = 29840):
     variant_cols = dict()
     for col in range(start, end):
-        c = Counter(align[:, col]).most_common(1)
-        if c[0][0] in ['A', 'C', 'G', 'T']:
-            pct = c[0][1] / len(align[:, col])
-            if pct <= consensus_cutoff:
+        # c = Counter(align[:, col]).most_common(1)
+        c = Counter(align[:, col])
+        common = c.most_common(1)
+        if common[0][0] in ['A', 'C', 'G', 'T']:
+            denom = sum([c[k] for k in ['A', 'C', 'G', 'T', '-']])
+            pct = common[0][1] / denom
+            if pct < 1:
                 variant_cols[col] = (pct, list(align[:, col]))
 
     return variant_cols
