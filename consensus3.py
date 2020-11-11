@@ -17,58 +17,6 @@ import numpy as np
 from datetime import datetime
 import sys
 
-"""
-MI - calculate the mutual information between two columns of a 
-     multisequence alignment
-
-arguments:
-col1, col2 - two columns from the alignment
-pseudo - pseudocounts
-
-returns:
-the mutual information in bits
-
-requires:
-len(col1) == len(col2)
-pseudo >= 0
-np.log2
-"""
-
-def MI(col1, col2, pseudo = 0.05):
-    return metrics.mutual_info_score(col1, col2)/np.log(2)
-
-"""
-MI_table - generate a table of mutual information values from all paires of
-           columns in a  dictionary of aligned nucleotides
-
-arguments:
-variant_cols - a dictionary of columns. 
-               key = aligned column number, value = column data
-pos_map - a dictionary, key = aligned column position, value = reference coulum  position
-pseudo - pseudocounts
-
-returns:
-a dictionary -  sorted by value
-     key = string "col1_number, col2_number", 
-     value = mutual information between columns
-
-requires:
-pseudo >= 0
-"""
-
-def MI_table(variant_cols, pos_map, pseudo = 0.05):
-    var_cols = list(variant_cols.keys())
-    mi_tab = dict()
-    for i in range(len(var_cols)-1):
-        for j in range(i+1, len(var_cols)):
-            k = str(pos_map[var_cols[i]]+1) + ', ' + str(pos_map[var_cols[j]]+1)
-            mi_tab[k] = MI(variant_cols[var_cols[i]][1],
-                           variant_cols[var_cols[j]][1],
-                           pseudo = pseudo)
-    mi_tab = {k: v for k, v in sorted(mi_tab.items(), key=lambda item: item[1], reverse=True)}
-
-    return mi_tab
-
 
 """
 read_alignment_file - read a collection of aligned sequences in FASTA format
@@ -153,6 +101,7 @@ consensus_cutoff, start, end >= 0
 start, end with alignment column bounds
 """
 def get_varying_columns(align,
+                        consensus_cutoff = 1.0,
                         start = 130, end = 29840):
     variant_cols = dict()
     for col in range(start, end):
@@ -162,7 +111,7 @@ def get_varying_columns(align,
         if common[0][0] in ['A', 'C', 'G', 'T']:
             denom = sum([c[k] for k in ['A', 'C', 'G', 'T', '-']])
             pct = common[0][1] / denom
-            if pct < 1:
+            if pct < consensus_cutoff:
                 variant_cols[col] = (pct, list(align[:, col]))
 
     return variant_cols

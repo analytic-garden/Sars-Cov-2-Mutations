@@ -11,11 +11,64 @@ MI.py
 
 from Bio import AlignIO
 import pandas as pd
-from consensus3 import MI_table, ref_pos_to_alignment, \
+from sklearn import metrics
+import numpy as np
+from consensus3 import ref_pos_to_alignment, \
                         get_varying_columns, get_col_range
 
+
+def MI(col1, col2, pseudo = 0.05):
+    """
+    MI - calculate the mutual information between two columns of a 
+         multisequence alignment
+    
+    arguments:
+    col1, col2 - two columns from the alignment
+    pseudo - pseudocounts
+    
+    returns:
+    the mutual information in bits
+    
+    requires:
+    len(col1) == len(col2)
+    pseudo >= 0
+    np.log2
+    """
+    return metrics.mutual_info_score(col1, col2)/np.log(2)
+
+def MI_table(variant_cols, pos_map, pseudo = 0.05):
+    """
+    MI_table - generate a table of mutual information values from all paires of
+               columns in a  dictionary of aligned nucleotides
+    
+    arguments:
+    variant_cols - a dictionary of columns. 
+                   key = aligned column number, value = column data
+    pos_map - a dictionary, key = aligned column position, value = reference coulum  position
+    pseudo - pseudocounts
+    
+    returns:
+    a dictionary -  sorted by value
+         key = string "col1_number, col2_number", 
+         value = mutual information between columns
+    
+    requires:
+    pseudo >= 0
+    """
+    var_cols = list(variant_cols.keys())
+    mi_tab = dict()
+    for i in range(len(var_cols)-1):
+        for j in range(i+1, len(var_cols)):
+            k = str(pos_map[var_cols[i]]+1) + ', ' + str(pos_map[var_cols[j]]+1)
+            mi_tab[k] = MI(variant_cols[var_cols[i]][1],
+                           variant_cols[var_cols[j]][1],
+                           pseudo = pseudo)
+    mi_tab = {k: v for k, v in sorted(mi_tab.items(), key=lambda item: item[1], reverse=True)}
+
+    return mi_tab
+
 def main():
-    date = '2020_11_03'
+    date = '2020_11_11'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'
