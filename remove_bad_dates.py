@@ -70,7 +70,7 @@ def check_date(date):
     return (dt, date_ok)
 
 def main():
-    path_date = '2020_11_03'
+    path_date = '2020_11_11'
     base = '/mnt/g/Covid-19/' + path_date + '/' 
 
     fasta_file = base + 'ncbi_dataset/data/genomic.fna'
@@ -79,6 +79,7 @@ def main():
     out_file = base + 'sequences_valid_dates.fasta'
     ref_id = 'NC_045512.2'
         
+    # read the files
     gb = read_genbank_file(genbank_file)   
     all_seqs = read_fasta_file(fasta_file)
 
