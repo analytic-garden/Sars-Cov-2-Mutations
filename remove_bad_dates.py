@@ -79,7 +79,6 @@ def main():
     out_file = base + 'sequences_valid_dates.fasta'
     ref_id = 'NC_045512.2'
         
-    # read the files
     gb = read_genbank_file(genbank_file)   
     all_seqs = read_fasta_file(fasta_file)
 
