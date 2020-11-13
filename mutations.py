@@ -16,7 +16,7 @@ from consensus3 import ref_pos_to_alignment, read_genbank_file, \
                         get_col_range, count_mutations
                         
 def main():
-    date = '2020_11_03'
+    date = '2020_11_11'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'

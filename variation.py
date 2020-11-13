@@ -15,7 +15,7 @@ from consensus3 import read_genbank_file, init_dataframe, get_varying_columns, \
                         ref_pos_to_alignment
                         
 def main():
-    date = '2020_11_03'
+    date = '2020_11_11'
     base = '/mnt/g/Covid-19/' + date + '/' 
     
     ## align_file =  base + 'sequences_no_dups_aln.fasta'
@@ -47,10 +47,8 @@ def main():
     df['Diffs from Ref'] = diffs
     
     # wite the data
-    print('Variant Positions')
     for col in variant_cols:
         df['Pos ' + str(pos_map[col]+1)] = variant_cols[col][1]
-    print()
 
     df = df.sort_values('Collection Date')
     df.to_csv(csv_file, index=False)
