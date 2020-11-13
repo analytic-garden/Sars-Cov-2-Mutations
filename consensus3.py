@@ -12,8 +12,6 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from collections import Counter
 from collections import defaultdict
-from sklearn import metrics
-import numpy as np
 from datetime import datetime
 import sys
 

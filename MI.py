@@ -11,7 +11,6 @@ MI.py
 
 from Bio import AlignIO
 import pandas as pd
-from sklearn import metrics
 import numpy as np
 from consensus3 import ref_pos_to_alignment, \
                         get_varying_columns, get_col_range
@@ -33,9 +32,36 @@ def MI(col1, col2, pseudo = 0.05):
     len(col1) == len(col2)
     pseudo >= 0
     np.log2
+    
+    notes:
+        This method is faster than using contingency_matrix from sklearn
     """
-    return metrics.mutual_info_score(col1, col2)/np.log(2)
-
+    nts = ['A', 'C', 'G', 'T']
+    
+    c1 = {'A': pseudo, 'C': pseudo, 'G': pseudo, 'T': pseudo}
+    c2 = {'A': pseudo, 'C': pseudo, 'G': pseudo, 'T': pseudo}
+    p = {'A': {'A': pseudo, 'C': pseudo, 'G': pseudo, 'T': pseudo},
+          'C': {'A': pseudo, 'C': pseudo, 'G': pseudo, 'T': pseudo},
+          'G': {'A': pseudo, 'C': pseudo, 'G': pseudo, 'T': pseudo},
+          'T': {'A': pseudo, 'C': pseudo, 'G': pseudo, 'T': pseudo}}
+    
+    N = 0
+    for i in range(len(col1)):
+        if col1[i] in nts and col2[i] in nts:
+            c1[col1[i]] += 1
+            c2[col2[i]] += 1
+            p[col1[i]][col2[i]] += 1
+            N += 1
+            
+    mi = 0
+    for nt1 in nts:
+        count1 = c1[nt1]
+        for nt2 in nts:
+            count2 = c2[nt2]
+            mi += (p[nt1][nt2]/N) * np.log2(N * p[nt1][nt2] / (count1 * count2))
+            
+    return mi
+                 
 def MI_table(variant_cols, pos_map, pseudo = 0.05):
     """
     MI_table - generate a table of mutual information values from all paires of
@@ -48,23 +74,26 @@ def MI_table(variant_cols, pos_map, pseudo = 0.05):
     pseudo - pseudocounts
     
     returns:
-    a dictionary -  sorted by value
-         key = string "col1_number, col2_number", 
-         value = mutual information between columns
+    a dictionary
+         'Position_1' - a list of genome positions
+         'Position_2' - a list of genome positions
+         'MI' - list of mutual information between Position_1 and Position_2
     
     requires:
     pseudo >= 0
     """
     var_cols = list(variant_cols.keys())
-    mi_tab = dict()
+    
+    mi_tab = {'Position_1': [], 'Position_2': [], 'MI': []}
     for i in range(len(var_cols)-1):
         for j in range(i+1, len(var_cols)):
-            k = str(pos_map[var_cols[i]]+1) + ', ' + str(pos_map[var_cols[j]]+1)
-            mi_tab[k] = MI(variant_cols[var_cols[i]][1],
-                           variant_cols[var_cols[j]][1],
-                           pseudo = pseudo)
-    mi_tab = {k: v for k, v in sorted(mi_tab.items(), key=lambda item: item[1], reverse=True)}
-
+            mi = MI(variant_cols[var_cols[i]][1],
+                    variant_cols[var_cols[j]][1],
+                    pseudo = pseudo)
+            mi_tab['Position_1'].append(pos_map[var_cols[i]]+1)
+            mi_tab['Position_2'].append(pos_map[var_cols[j]]+1)
+            mi_tab['MI'].append(mi)
+            
     return mi_tab
 
 def main():
@@ -78,9 +107,6 @@ def main():
     min_col_quality = 0.90
     consensus_cutoff = 0.98
     ref_id = 'NC_045512.2'
-
-    # change these for different alignments and mutation level cutoffs
-    mi_cutoff = 0.5
     
     # get the data
     align = AlignIO.read(align_file, 'fasta')
@@ -96,19 +122,9 @@ def main():
                                        start = start, end = end)
 
     # mutual information
-    print('Mutual Infomation')
     mi_tab = MI_table(variant_cols, pos_map)
-    mi_dict = {'Position_1': [], 'Position_2': [], 'MI': []}
-    for k,mi in mi_tab.items():
-        p1, p2 = k.split(',')
-        mi_dict['Position_1'].append(int(p1))
-        mi_dict['Position_2'].append(int(p2))
-        mi_dict['MI'].append(mi)
-        if mi >= mi_cutoff:
-            print('MI(', k,  ') =', mi)
-    df_mi = pd.DataFrame(mi_dict)
+    df_mi = pd.DataFrame(mi_tab).sort_values(by = 'MI', ascending = False)
     df_mi.to_csv(mutual_info_csv, index=False)
-
 
 if __name__ == "__main__":
     main()
