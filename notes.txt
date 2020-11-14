@@ -36,26 +36,26 @@ mutual information among aligned positions
 R
 
 7) Plot MI graph
-mi_2020_11_03 <- read.csv('MI_ncbi_valid_dates.csv')
-plot_MI(mi_2020_11_03)
+mi_2020_11_11 <- read.csv('MI_ncbi_valid_dates.csv')
+plot_MI(mi_2020_11_11)
 
 8) Read sars_cov_2_variation_ncbi_valid_dates_98.0.csv into dataframe
-cv_2020_11_03 <- read.csv('sars_cov_2_variation_ncbi_valid_dates_98.0.csv')
+cv_2020_11_11 <- read.csv('sars_cov_2_variation_ncbi_valid_dates_98.0.csv')
 # set Collection.Date to datetime
-cv_2020_11_03$Collection.Date <- as.Date(cv_2020_11_03$Collection.Date)
+cv_2020_11_11$Collection.Date <- as.Date(cv_2020_11_11$Collection.Date)
 
 9) Plot varying positions - displays all positions with significant MI
 and saves to files
-plot_varying_pct2(cv_2020_11_03, mi_2020_11_03)
+plot_varying_pct2(cv_2020_11_11, mi_2020_11_11)
 Produces plots in Plots/ and Plots_pct
 
-10) run plot_varying_pct3(cv_2020_11_03, positions = c(241, 3037, 14408, 23403))
+10) run plot_varying_pct3(cv_2020_11_11, positions = c(241, 3037, 14408, 23403))
 to get plots for groups of sites
-run plot_varying_nucs2(cv_2020_11_03,positions = c(241, 3037, 14408, 23403))
+run plot_varying_nucs2(cv_2020_11_11,positions = c(241, 3037, 14408, 23403))
 to get bar plots of counts
 
 11) Plot combos
-cv_table_241 <- covary_table2(cv_2020_11_03, positions = c(241, 3037, 14408, 23403))
+cv_table_241 <- covary_table2(cv_2020_11_11, positions = c(241, 3037, 14408, 23403))
 ggplot(cv_table_241, aes(x = Collection.Date, y=Count, fill=Nucleotides)) +
 		     geom_bar(stat='identity', width=1)
 		     
