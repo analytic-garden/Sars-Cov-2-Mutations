@@ -1,9 +1,13 @@
-plot_positive_pct <- function(df, counties = c('Albany', 'Columbia', 'Rensselaer', 'Saratoga', 'Schenectady')) {
+plot_positive_pct <- function(counties = c('Albany', 'Columbia', 'Rensselaer', 'Saratoga', 'Schenectady')) {
   require(tidyverse)
   require(zoo)
   require(rlist)
   require(grid)
   require(gridExtra)
+  
+  ny_url <- "https://health.data.ny.gov/api/views/xdss-u53e/rows.csv?accessType=DOWNLOAD&api_foundry=true"
+  df <- read.csv(ny_url)
+  df$Test.Date <- as.Date(df$Test.Date, format='%m/%d/%Y')
   
   plot_list <- list()
   df2 <- data.frame(Test.Date = NULL, County = NULL, Pct = NULL)
