@@ -310,7 +310,7 @@ def count_mutations(align, pos_map, ref_seq,
                 alt_codons.append('')
                 alt_aas.append('')
                 mutations.append('')
-                new_nucs.append('')
+                new_nucs.append(str(seq_info['new_nuc']))
                 
             notes.append(format_qual(seq_info['qualifiers'], 'note'))
             products.append(format_qual(seq_info['qualifiers'], 'product'))
@@ -337,18 +337,18 @@ def count_mutations(align, pos_map, ref_seq,
             'T': nts['T'],
             'insertions': nts['-'],
             'other': other,
-            'ref': refs,
-            'consensus': consensus,
+            'ref_nucleotide': refs,
+            'consensus_nucleotide': consensus,
             'consensus %': consensus_pct,
-            'alt': new_nucs,
+            'alt_nucleotide': new_nucs,
             'feature_type': feat_type,
-            'codons': codons,
+            'codon': codons,
             'ref_aa': aas,
             'alt_codons': alt_codons,
             'alt_aas': alt_aas,
             'aa_pos': aa_pos,
-            'mutations': mutations,
-            'products': products,
+            'mutation': mutations,
+            'product': products,
             'notes': notes
             }
 
