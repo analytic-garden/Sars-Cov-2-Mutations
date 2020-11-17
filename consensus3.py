@@ -294,10 +294,10 @@ def count_mutations(align, pos_map, ref_seq,
                                            consensus):
         if pct/100 < consensus_cutoff: # only use significan columns
             seq_info = find_location_feature(ref_seq, position-1, alt, consens)
-            aas.append(str(seq_info['aa']))
             feat_type.append(seq_info['feature_type'])
             
             if seq_info['feature_type'].find('UTR') == -1:
+                aas.append(str(seq_info['aa']))
                 codons.append(str(seq_info['codon']))
                 alt_codons.append(str(seq_info['alt_codon']))
                 alt_aas.append(str(seq_info['alt_aa']))
@@ -306,6 +306,7 @@ def count_mutations(align, pos_map, ref_seq,
                                  str(seq_info['alt_aa']))
                 new_nucs.append(str(seq_info['new_nuc']))
             else:
+                aas.append('')
                 codons.append('')
                 alt_codons.append('')
                 alt_aas.append('')
