@@ -1,5 +1,5 @@
 """
-consensus3.py - format and save SARS-CoV-2 data from NCBI
+consensus3.py - functions to format and save SARS-CoV-2 data from NCBI
 author: Bill Thompson
 license: GPL 3
 copyright: Mar. 27, 2020
@@ -499,83 +499,3 @@ def get_col_range(align, min_quality = 0.99):
     
     return start, end
     
-def main():
-    date = '2020_10_07'
-    base = '/mnt/g/Covid-19/' + date + '/' 
-    
-    align_file =  base + 'sequences_no_dups_aln.fasta'
-    genbank_file = base + 'seqs.gb/ncbi_dataset/data/genomic.gbff'
-    csv_file_base = base + 'sars_cov_2_variation_ncbi_no_dups_'
-    mutation_csv_base = base + 'sars_cov_2_ncbi_ncbi_mut_no_dups_'
-    mutual_info_csv = base + 'MI_ncbi_no_dups.csv'
-
-    ref_id = 'NC_045512.2'
-
-    # change these for different alignments and mutation level cutoffs
-    min_col_quality = 0.90
-    consensus_cutoff = 0.98
-    mi_cutoff = 0.5
-    csv_file = csv_file_base + str(consensus_cutoff * 100) + '.csv'
-    mutation_csv_file = mutation_csv_base + str(consensus_cutoff * 100) + '.csv'
-
-    # map alignment to the reference sequence
-    pos_map = ref_pos_to_alignment(align_file, ref_id)
-
-    # get the data
-    align = AlignIO.read(align_file, 'fasta')
-    genbank = read_genbank_file(genbank_file)
-    
-    start, end = get_col_range(align, min_col_quality)
-
-    ref_seq = genbank[ref_id]  # the reference sequence record
-
-    mutations = count_mutations(align, pos_map, ref_seq, 
-                                start = start, end = end,
-                                consensus_cutoff=consensus_cutoff)
-    df2 = pd.DataFrame(mutations)
-    df2 = df2.sort_values('consensus %')
-    df2.to_csv(mutation_csv_file, index=False)
-
-    df = init_dataframe(genbank, align)
-        
-    # get varying columns
-    variant_cols = get_varying_columns(align, 
-                                       consensus_cutoff = consensus_cutoff,
-                                       start = start, end = end)
-
-    diffs = count_variation_from_ref(align, align_file, ref_id, start, end)
-    df['Diffs from Ref'] = diffs
-    
-    # wite the data
-    print('Variant Positions')
-    for col in variant_cols:
-        df['Pos ' + str(pos_map[col]+1)] = variant_cols[col][1]
-        print('Pos ' + str(pos_map[col]+1) + ':', variant_cols[col][0])
-    print()
-
-    df = df.sort_values('Collection Date')
-    df.to_csv(csv_file, index=False)
-
-    # mutual information
-    print('Mutual Infomation')
-    mi_tab = MI_table(variant_cols, pos_map)
-    mi_dict = {'Position_1': [], 'Position_2': [], 'MI': []}
-    for k,mi in mi_tab.items():
-        p1, p2 = k.split(',')
-        mi_dict['Position_1'].append(int(p1))
-        mi_dict['Position_2'].append(int(p2))
-        mi_dict['MI'].append(mi)
-        if mi >= mi_cutoff:
-            print('MI(', k,  ') =', mi)
-    df_mi = pd.DataFrame(mi_dict)
-    df_mi.to_csv(mutual_info_csv, index=False)
-
-    # mutations = count_mutations(align, pos_map, ref_seq, 
-    #                             start = start, end = end,
-    #                             consensus_cutoff=consensus_cutoff)
-    # df2 = pd.DataFrame(mutations)
-    # df2 = df2.sort_values('consensus %')
-    # df2.to_csv(mutation_csv_file, index=False)
-
-if __name__ == "__main__":
-    main()
