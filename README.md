@@ -48,7 +48,7 @@ plot_MI(mi_2020_11_11)
 
 6) Read sars_cov_2_variation_ncbi_valid_dates_98.0.csv into dataframe
 cv_2020_11_11 <- read.csv('sars_cov_2_variation_ncbi_valid_dates_98.0.csv')
-set Collection.Date to datetime
+# set Collection.Date to datetime
 cv_2020_11_11$Collection.Date <- as.Date(cv_2020_11_11$Collection.Date)
 
 7) run plot_varying_pct3(cv_2020_11_11, positions = c(241, 3037, 14408, 23403))
