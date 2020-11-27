@@ -22,8 +22,7 @@ time ~/anaconda3/bin/mafft --auto --preservecase --thread -1 --addfragments sequ
 
 Produces sequences_valid_dates_aln.fasta
 
-4)
-edit consensus cutoff and min_qual_cutoff in each of these to change
+4) edit consensus cutoff and min_qual_cutoff in each of these to change
 the number of columns used from the alignment.
 
 run variation.py 
@@ -47,8 +46,7 @@ plot_MI(mi_2020_11_11)
 2020_11_11 is the download date. The object name can be anything.
 
 6) Read sars_cov_2_variation_ncbi_valid_dates_98.0.csv into dataframe
-cv_2020_11_11 <- read.csv('sars_cov_2_variation_ncbi_valid_dates_98.0.csv')
-# set Collection.Date to datetime
+cv_2020_11_11 <- read.csv('sars_cov_2_variation_ncbi_valid_dates_98.0.csv') # set Collection.Date to datetime
 cv_2020_11_11$Collection.Date <- as.Date(cv_2020_11_11$Collection.Date)
 
 7) run plot_varying_pct3(cv_2020_11_11, positions = c(241, 3037, 14408, 23403))
